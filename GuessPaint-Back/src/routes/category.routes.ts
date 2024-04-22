@@ -4,6 +4,9 @@ import { CategoryController } from "../controller/category.controller";
 
 const Router = express.Router();
 const categoryController = new CategoryController();
+const {createCategorySchema,updateCategorySchema} = require("../middleware/schemas/category.schema");
+const validateInformation = require("../middleware/validation");
+
 Router.get(
     "/category",
     categoryController.getByTexto
@@ -21,11 +24,13 @@ Router.get(
 
     Router.post(
     "/category",
+    validateInformation(createCategorySchema),
     categoryController.save
     );
 
     Router.put(
     "/category",
+    validateInformation(updateCategorySchema),
     categoryController.update
     )
 

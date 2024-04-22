@@ -1,14 +1,21 @@
 import {
     Entity,
     PrimaryGeneratedColumn,
-    Column,
     BaseEntity,
+    Column
     } from "typeorm";
+import { Word } from "./Word.entity";
+import { Category } from "./Category.entity";
+
     @Entity({ name: "words_category" })
     export class WordCategory extends BaseEntity {
         @PrimaryGeneratedColumn("uuid")
         id: string;
+        
+        @Column({ nullable: false })
+        word_id: string;
 
-        //word_category_word_id_fkey
-        //word_category_category_id_fkey
+        @Column({ nullable: false })
+        category_id: string;
+
     }
