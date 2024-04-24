@@ -12,7 +12,7 @@ CREATE TABLE public.categories (
 );
 
 CREATE TABLE public.words_category (
-	id uuid NOT NULL,
+	id varchar(255) NOT NULL,
 	word_id uuid NOT NULL,
 	category_id uuid NOT NULL,
 	CONSTRAINT word_category_pkey PRIMARY KEY (id),

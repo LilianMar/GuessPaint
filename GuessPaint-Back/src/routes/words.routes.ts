@@ -1,7 +1,7 @@
 
 import * as express from "express";
 import { WordController } from "../controller/word.controller";
-import { Word } from "../entity/Word.entity";
+
 
 const Router = express.Router();
 const wordController = new WordController();
@@ -9,12 +9,12 @@ const {createWordSchema,updateWordSchema} = require("../middleware/schemas/word.
 const validateInformation = require("../middleware/validation");
 
 Router.get(
-    "/word",
+    "/wordByText",
     wordController.getByTexto
     );
 
     Router.get(
-    "/word/:id",
+    "/wordById/:id",
     wordController.getById
     );
 
@@ -24,19 +24,19 @@ Router.get(
     );
 
     Router.post(
-    '/word',
+    '/wordCreate',
     validateInformation(createWordSchema),
     wordController.save
     );
 
     Router.put(
-    "/word",
+    "/wordUpdateBy/:id",
     validateInformation(updateWordSchema),
     wordController.update
     )
 
     Router.delete(
-    "/word/:id",
+    "/wordDelete/:id",
     wordController.delete
     )
     export { Router as wordRouter };

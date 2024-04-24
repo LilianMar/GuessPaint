@@ -3,6 +3,8 @@ import "reflect-metadata";
 import { errorHandler } from "./middleware/errorHandler";
 import { wordRouter } from "./routes/words.routes";
 import { categoryRouter } from "./routes/category.routes";
+import { wordCategoryRouter } from "./routes/wordCategory.routes";
+import {roomRouter} from "./routes/room.routes";
 import * as swaggerUi from 'swagger-ui-express';
 import * as swaggerSpec from './swagger';
 const cors = require('cors');
@@ -16,6 +18,8 @@ app.use(express.json());
 app.use(errorHandler);
 app.use("/api", wordRouter);
 app.use("/api", categoryRouter);
+app.use("/api", wordCategoryRouter);
+app.use("/api", roomRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 //app.use('/ws', websocketRouter);
 

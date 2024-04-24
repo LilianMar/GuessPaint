@@ -1,47 +1,34 @@
-import {Request, Response} from 'express';
+import { Request, Response } from 'express';
+import { RoomService } from '../service/room.service';
 import { Room } from '../entity/Room.entity';
-import { RoomRepository } from '../repository/room.repository';
-import { RoomResponse } from '../dto/room.dto';
 import { v4 as uuidv4 } from 'uuid';
 
-export class RoomController{
-    private roomRepository: RoomRepository = new RoomRepository();
+export class RoomController {
+    private roomService: RoomService = new RoomService();
 
-    public getByTitle = async (req: Request, res: Response) => {
-        try{
-            const title = <string>req.query.title;
-            console.log(title);
-            const room: RoomResponse = await this.roomRepository.findByTitle(title);
-            return res.status(200).json({
-                room,
-            }); 
-        }catch(error){
-            res.status(400).json({error: error.message});
+    public getById = async (req: Request, res: Response) => {
+        const { id } = req.params;
+        try {
+            const room = await this.roomService.findById(id);
+            return res.status(200).json({ room });
+        } catch (error) {
+            res.status(400).json({ error: error.message });
         }
     }
 
-    public getById = async (req: Request, res: Response) =>{
-        const {id}=req.params;
-        try{
-            const room= await this.roomRepository.findById(id);
-            return res.status(200).json({room});
-        }catch(error){
-            res.status(400).json({error: error.message});   
-        }
-    }
-
-    public getWordsByRoom = async (req: Request, res: Response) =>{
-        try{
-            const words = await this.roomRepository.findWordsByRoom();
+    public getWordsByRoom = async (req: Request, res: Response) => {
+        try {
+            const category_id = req.query.category_id as string;
+            const words = await this.roomService.findWordsByRoom(category_id);
             return res.status(200).json(words);
-        }catch(error){
-            res.status(400).json({error: error.message});
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
     }
-}
 
     public getAll = async (req: Request, res: Response) => {
         try {
-            const rooms: Room[] = await this.roomRepository.getAll();
+            const rooms: Room[] = await this.roomService.getAll();
             return res.status(200).json(rooms);
         } catch (error) {
             res.status(400).json({ error: error.message });
@@ -52,37 +39,19 @@ export class RoomController{
         const body = req.body;
         try {
             const id = uuidv4();
-            body['id'] = id;
-            const result: Room = await this.roomRepository.save(body);
+            body.id = id;
+            const result: Room = await this.roomService.save(body);
             return res.status(200).json(result);
         } catch (error) {
             res.status(400).json({ error: error.message });
         }
     }
 
-    public update = async (req: Request, res: Response) => {
-        const { id } = req.params;
-        const body = req.body;
-        try {
-            const room: Room = await this.roomRepository.findById(id);
-            if (room === null) {
-                return res.status(404).json({ error: 'Room not found' });
-            }
-            const updatedRoom = await this.roomRepository.save(Object.assign(room, body));
-            return res.status(200).json(updatedRoom);
-        } catch (error) {
-            res.status(400).json({ error: error.message });
-        }
-    }
 
     public delete = async (req: Request, res: Response) => {
         const { id } = req.params;
         try {
-            const room: Room = await this.roomRepository.findById(id);
-            if (room === null) {
-                return res.status(404).json({ error: 'Room not found' });
-            }
-            await this.roomRepository.delete(id);
+            await this.roomService.delete(id);
             return res.status(200).json({ message: 'Room deleted' });
         } catch (error) {
             res.status(400).json({ error: error.message });

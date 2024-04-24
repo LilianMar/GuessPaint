@@ -1,25 +1,19 @@
 
 import { Room } from "../entity/Room.entity";
 import { AppDataSource } from "../data-source";
-import { WordCategory } from "../entity/WordCategory.entity";
+import { WordCategoryRepository } from "../repository/wordCategory.repository";
 
 export class RoomRepository{
     private repository = AppDataSource.getRepository(Room);
-    private wordCategoryRepository = AppDataSource.getRepository(WordCategory);
-
-    async findByTitle(title: string) {
-        return this.repository.findOneBy({ title });
-    }
-
+    private wordCategoryRepository: WordCategoryRepository = new WordCategoryRepository();
 
     async findById(id: string) {
         return this.repository.findOneBy({ id });
     }
 
-    async findWordsByRoom() {
-        //llamar el metodo findAll de word category con la categoria asociada ala sala
+    async findWordsByRoom(category_id: string) {//revisar
+        return this.wordCategoryRepository.findByCategoryId(category_id);
         
-        //return this.repository.find({relations: ["words"]});
     }
     
     async getAll() {
