@@ -16,12 +16,19 @@ import { Category } from "./Category.entity";
         @PrimaryColumn()
         id: string;
         
+        @Column({type: 'varchar', name: 'word_id'})
+        wordId: string;
+        
+        @Column({type: 'varchar', name: 'category_id'})
+        categoryId: string;
+        
+
         @ManyToOne(() => Word, {nullable: false})
-        @JoinColumn({ name: "word_id"})
-        word_id: Word;
+        @JoinColumn({ name: "word_id", referencedColumnName: 'id'})
+        words: Word[];
 
         @ManyToOne(() => Category, {nullable: false})
-        @JoinColumn({ name: "category_id"})
-        category_id: Category;
+        @JoinColumn({ name: "category_id", referencedColumnName: 'id'})
+        categories: Category[];
 
     }

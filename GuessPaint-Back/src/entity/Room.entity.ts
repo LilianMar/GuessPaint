@@ -4,7 +4,8 @@ import {
     Column,
     BaseEntity,
     ManyToMany,
-    JoinColumn
+    JoinColumn,
+    ManyToOne
     } from "typeorm";
 import { Category } from "./Category.entity";
 
@@ -16,9 +17,13 @@ import { Category } from "./Category.entity";
         @Column({ nullable: false })
         title: string;
         
-        @ManyToMany(() => Category, {nullable: false})
+
+        @Column({ nullable: false,  name: "category_id" })
+        categoryId: string;
+
+        @ManyToOne(() => Category, {nullable: false})
         @JoinColumn({ name: "category_id"})
-        category_id: Category;
+        category: Category;
 
         @Column({ nullable: false })
         progress: string;  

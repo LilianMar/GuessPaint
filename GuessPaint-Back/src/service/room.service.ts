@@ -8,7 +8,7 @@ export class RoomService {
         return await this.roomRepository.findById(id);
     }
 
-    public async findWordsByRoom(category_id: string) {
+    public async findWordsByRoom(category_id: string) {//llamoa category y trae las palabbras 
         return await this.roomRepository.findWordsByRoom(category_id);
     }
 
