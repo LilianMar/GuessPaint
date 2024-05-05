@@ -1,31 +1,26 @@
-
 CREATE TABLE public.words (
-	id uuid NOT NULL,
-	texto varchar(255) NOT NULL,
-	CONSTRAINT word_pkey PRIMARY KEY (id)
+    word_id SERIAL PRIMARY KEY,
+    texto VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE public.categories (
-	id uuid NOT NULL,
-	title varchar(255) NOT NULL,
-	CONSTRAINT category_pkey PRIMARY KEY (id)
+    category_id SERIAL PRIMARY KEY,
+    title VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE public.words_category (
-	id varchar(255) NOT NULL,
-	word_id uuid NOT NULL,
-	category_id uuid NOT NULL,
-	CONSTRAINT word_category_pkey PRIMARY KEY (id),
-	CONSTRAINT word_category_word_id_fkey FOREIGN KEY (word_id) REFERENCES public.words(id),
-	CONSTRAINT word_category_category_id_fkey FOREIGN KEY (category_id) REFERENCES public.categories(id)
+    wordCategory_id INT NOT NULL PRIMARY KEY UNIQUE,
+    word_id INT NOT NULL,
+    category_id INT NOT NULL,
+    FOREIGN KEY (word_id) REFERENCES words (word_id),
+    FOREIGN KEY (category_id) REFERENCES categories (category_id)
+
 );
 
-CREATE TABLE public.rooms (
-	id uuid NOT NULL,
-	title varchar(255) NOT NULL,
-	category_id uuid NOT NULL,
-	progress varchar(255) NOT NULL,
-	CONSTRAINT room_pkey PRIMARY KEY (id),
-	CONSTRAINT word_category_category_id_fkey FOREIGN KEY (category_id) REFERENCES public.categories(id)
+CREATE TABLE rooms (
+    room_id SERIAL PRIMARY KEY,
+    title VARCHAR(100) NOT NULL,
+    category_id INT NOT NULL,
+    progress VARCHAR(20) NOT NULL,
+    FOREIGN KEY (category_id) REFERENCES categories (category_id)
 );
-

@@ -13,14 +13,14 @@ import { Category } from "./Category.entity";
 
     @Entity({ name: "words_category" })
     export class WordCategory extends BaseEntity {
-        @PrimaryColumn()
-        id: string;
+        @PrimaryColumn({name: 'wordcategory_id'})
+        id: number;
         
-        @Column({type: 'varchar', name: 'word_id'})
-        wordId: string;
+        @Column({name: 'word_id' , nullable: false})
+        wordId: number;
         
-        @Column({type: 'varchar', name: 'category_id'})
-        categoryId: string;
+        @Column({name: 'category_id',  nullable: false})
+        categoryId: number;
         
 
         @ManyToOne(() => Word, {nullable: false})

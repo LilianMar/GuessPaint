@@ -1,27 +1,68 @@
 import { RoomRepository } from '../repository/room.repository';
 import { Room } from '../entity/Room.entity';
+import { RoomResponse } from '../dto/room.dto';
+import { CategoryRepository } from '../repository/category.repository';
+import { Category } from '../entity/Category.entity';
 
 export class RoomService {
-    private roomRepository: RoomRepository = new RoomRepository();
+    private roomRepository: RoomRepository ;
+    private categoryRepository: CategoryRepository ;
 
-    public async findById(id: string) {
-        return await this.roomRepository.findById(id);
+    constructor() {
+        this.roomRepository = new RoomRepository();
+        this.categoryRepository = new CategoryRepository();
     }
 
-    public async findWordsByRoom(category_id: string) {//llamoa category y trae las palabbras 
-        return await this.roomRepository.findWordsByRoom(category_id);
+    public async save(room: RoomResponse): Promise<Room> {
+        console.log(room);
+        const responseByIdCategory = await this.categoryRepository.findById(+room.categoryId);
+        console.log(responseByIdCategory);
+        console.log(room.categoryId);
+
+        if (!responseByIdCategory) {
+            throw new Error('Category not found');
+        }
+        return await this.roomRepository.save(room);
     }
 
-    public async getAll() {
+    public async findById(id: number): Promise<Room | undefined> {
+        const roomExist = await this.roomRepository.findById(id);
+        if (!roomExist) {
+            throw new Error('Room not found');
+        }
+        return roomExist;
+    }
+
+    public async findCategoryByRoomId(id: number): Promise<Category | undefined> {
+        const roomExist = await this.roomRepository.findById(id);
+        if(roomExist){
+            const categoryExist = await this.categoryRepository.findById(roomExist.categoryId);
+            if(categoryExist){
+                return categoryExist;
+            }
+            else{
+                throw new Error('Category not found');
+            }
+        }
+        else{
+            throw new Error('Room not found');
+        }
+    }
+
+    public async getAll(): Promise<Room[]>{
         return await this.roomRepository.getAll();
     }
 
-    public async save(body: any) {
-        return await this.roomRepository.save(body);
+    public async updateRoom(room: RoomResponse): Promise<Room> {
+        const roomExist = await this.roomRepository.findById(room.id);
+        const responseByIdCategory = await this.categoryRepository.findById(roomExist.categoryId);
+        if (!roomExist || !responseByIdCategory) {
+            throw new Error('Room not found or Category not found');
+        }
+        return await this.roomRepository.update(room);
     }
 
-
-    public async delete(id: string) {
+    public async delete(id: number): Promise<void> {
         const room: Room = await this.roomRepository.findById(id);
         if (!room) {
             throw new Error('Room not found');

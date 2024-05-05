@@ -9,6 +9,8 @@ module.exports={
         .required()
     }),
     updateCategorySchema: Joi.object().keys({
+        id: Joi.number()
+        .required(),
         title: Joi.string()
         .min(3)
         .max(15)

@@ -1,4 +1,4 @@
 export class CategoryResponse{
-    id: string;
+    id: number;
     title: string;
 }

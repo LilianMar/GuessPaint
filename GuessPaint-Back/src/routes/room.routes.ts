@@ -10,13 +10,13 @@ const validateInformation = require('../middleware/validation');
 
 Router.get(
     '/room/:id',
-    roomController.getById
+    roomController.findById
 );
 
 
 Router.get(
-    '/room/words',
-    roomController.getWordsByRoom
+    '/room/words/:id',
+    roomController.findCategoryByRoomId
 );
 
 Router.get(
@@ -28,6 +28,12 @@ Router.post(
     '/room',
     validateInformation(createRoomSchema),
     roomController.save
+);
+
+Router.put(
+    '/room',
+    validateInformation(updateRoomSchema),
+    roomController.update
 );
 
 Router.delete(

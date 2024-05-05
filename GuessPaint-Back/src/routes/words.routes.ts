@@ -10,12 +10,12 @@ const validateInformation = require("../middleware/validation");
 
 Router.get(
     "/wordByText",
-    wordController.getByTexto
+    wordController.findByTexto
     );
 
     Router.get(
     "/wordById/:id",
-    wordController.getById
+    wordController.findById
     );
 
     Router.get(
@@ -30,7 +30,7 @@ Router.get(
     );
 
     Router.put(
-    "/wordUpdateBy/:id",
+    "/wordUpdate",
     validateInformation(updateWordSchema),
     wordController.update
     )

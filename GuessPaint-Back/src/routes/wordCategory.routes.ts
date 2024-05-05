@@ -9,7 +9,7 @@ const validateInformation = require('../middleware/validation');
 
 Router.get(
     '/wordCategoryId',
-    wordCategoryController.getByCategoryId
+    wordCategoryController.findById
 );
 
 Router.get(

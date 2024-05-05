@@ -4,17 +4,16 @@ import {
     Column,
     BaseEntity,
     ManyToMany,
-    JoinColumn,
     JoinTable
     } from "typeorm";
     import { Category } from "./Category.entity";
     
     @Entity({ name: "words" })
     export class Word extends BaseEntity {
-        @PrimaryGeneratedColumn("uuid")
-        id: string;
+        @PrimaryGeneratedColumn({name: 'word_id'})
+        id: number;
 
-        @Column({ nullable: false })
+        @Column({name: 'texto', type: 'varchar', nullable: false  })
         texto: string;
 
         @ManyToMany(

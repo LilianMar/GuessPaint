@@ -9,6 +9,8 @@ module.exports={
         .required()
     }),
     updateWordSchema: Joi.object().keys({
+        id: Joi.number()
+        .required(),
         texto: Joi.string()
         .min(3)
         .max(15)

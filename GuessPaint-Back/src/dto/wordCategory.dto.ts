@@ -1,5 +1,5 @@
 export class WordCategoryResponse{
-    id: string;
-    word_id: string;
-    category_id: string;
+    id: number;
+    wordId: number;
+    categoryId: number;
 }

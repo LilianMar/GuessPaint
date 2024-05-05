@@ -1,7 +1,7 @@
 export class RoomResponse{
-    id: string;
+    id: number;
     title: string;
-    category_id: string;
+    categoryId: number;
     progress: string;
     
 }

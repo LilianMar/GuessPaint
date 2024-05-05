@@ -3,7 +3,6 @@ import {
     PrimaryGeneratedColumn,
     Column,
     BaseEntity,
-    ManyToMany,
     JoinColumn,
     ManyToOne
     } from "typeorm";
@@ -11,20 +10,21 @@ import { Category } from "./Category.entity";
 
     @Entity({ name: "rooms" })
     export class Room extends BaseEntity {
-        @PrimaryGeneratedColumn("uuid")
-        id: string;
+        @PrimaryGeneratedColumn({name: 'room_id'})
+        id: number;
 
-        @Column({ nullable: false })
+        @Column({name: 'title', type: 'varchar',  nullable: false })
         title: string;
-        
 
-        @Column({ nullable: false,  name: "category_id" })
-        categoryId: string;
-
-        @ManyToOne(() => Category, {nullable: false})
-        @JoinColumn({ name: "category_id"})
-        category: Category;
-
-        @Column({ nullable: false })
+        @Column({name: 'progress', type: 'varchar', default: 'Sin iniciar', nullable: false})
         progress: string;  
+
+        @Column({name: "category_id" , nullable: false})
+        categoryId: number;
+
+        @ManyToOne(() => Category, {nullable: true})
+        @JoinColumn({ name: "category_id"})
+        categories?: Category[];
+
+        
     }

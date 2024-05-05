@@ -1,4 +1,4 @@
 export class WordResponse{
-    id: string;
+    id: number;
     texto: string;
 }

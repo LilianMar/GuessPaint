@@ -17,7 +17,7 @@ export const AppDataSource = new DataSource({
     port:  5432,
     username: "postgres",
     password: "postgres",
-    database: "guessPaintDB",
+    database: "guessPaintBD2",
     synchronize: false,
 //logging logs sql command on the treminal
     logging:  false,

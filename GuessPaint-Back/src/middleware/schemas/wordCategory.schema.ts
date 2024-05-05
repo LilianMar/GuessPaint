@@ -3,16 +3,18 @@ import { create } from "domain";
 const Joi= require('joi');
 module.exports={
     createWordCategorySchema: Joi.object().keys({
-        word_id: Joi.string()
+        wordId: Joi.number()
         .required(),
-        category_id: Joi.string()
+        categoryId: Joi.number()
         .required()
         
     }),
     updateWordCategorySchema: Joi.object().keys({
-        word_id: Joi.string()
+        id: Joi.number()
         .required(),
-        category_id: Joi.string()
+        wordId: Joi.number()
+        .required(),
+        categoryId: Joi.number()
         .required()
     }),
 

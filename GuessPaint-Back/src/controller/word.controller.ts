@@ -4,9 +4,23 @@ import { WordService } from "../service/word.service";
 
 export class WordController {
 
-    private wordService: WordService = new WordService();
+    private wordService: WordService;
 
-    public getByTexto = async (req: Request, res: Response) => {
+    constructor() {
+        this.wordService = new WordService();
+    }
+
+    public save = async (req: Request, res: Response) => {
+        const word = req.body;
+        try {
+            const result = await this.wordService.save(word);
+            return res.status(200).json(result);
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
+    }
+
+    public findByTexto = async (req: Request, res: Response) => {
         try {
             const texto = <string>req.query.texto;
             console.log(texto);
@@ -19,13 +33,10 @@ export class WordController {
         }
     };
 
-    public getById = async (req: Request, res: Response) => {
+    public findById = async (req: Request, res: Response) => {
         const { id } = req.params;
         try {
-            const word = await this.wordService.findById(id);
-            if (word === null) {
-                res.status(404).json({ error: 'Word doesnt exists' });
-            }
+            const word = await this.wordService.findById(+id);
             res.status(200).json({ word });
         } catch (error) {
             res.status(400).json({ error: error.message });
@@ -41,34 +52,21 @@ export class WordController {
         }
     }
 
-    public save = async (req: Request, res: Response) => {
-        const body = req.body;
-        try {
-            
-            const result = await this.wordService.save(body);
-            return res.status(200).json(result);
-        } catch (error) {
-            res.status(400).json({ error: error.message });
-        }
-    }
-
     public update = async (req: Request, res: Response) => {
-        const { id } = req.params;
-        const { texto } = req.body;
+        const word = req.body;
         try {
-            await this.wordService.update(id, texto);
+            await this.wordService.update(word);
             res.status(200).json({ message: 'Word Updated' });
         } catch (error) {
             res.status(400).json({ error: error.message });
         }
     }
 
-
     public delete = async (req: Request, res: Response) => {
         const { id } = req.params;
         try {
-            await this.wordService.delete(id);
-            return res.status(200).json({ message: 'Deleted' });
+            await this.wordService.delete(+id);
+            return res.status(200).json({  message: `Category with id: ${ id } deleted successfully.`});
         } catch (error) {
             res.status(400).json({ error: error.message });
         }

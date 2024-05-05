@@ -10,10 +10,10 @@ import { Word } from "./Word.entity";
     
     @Entity({ name: "categories" })
     export class Category extends BaseEntity {
-        @PrimaryGeneratedColumn("uuid")
-        id: string;
+        @PrimaryGeneratedColumn({name: 'category_id'})
+        id: number;
 
-        @Column({ nullable: false })
+        @Column({ name: 'title', type: 'varchar', length: 50, nullable: false, unique: true })
         title: string;
 
         

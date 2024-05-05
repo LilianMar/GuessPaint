@@ -1,27 +1,24 @@
 import { AppDataSource } from "../data-source";
+import { WordCategoryResponse } from "../dto/wordCategory.dto";
 import { WordCategory } from "../entity/WordCategory.entity";
 
 export class WordCategoryRepository{
     private repository = AppDataSource.getRepository(WordCategory);
+    
 
-    async findByWordId(word_id: string) {//word_id string??
-        return this.repository.findOneBy({  });
+    async save(wordCategory: WordCategoryResponse){
+        return this.repository.save(wordCategory);
     }
 
-    async findByCategoryId(category_id: string) { //category_id string??
-        return this.repository.findOneBy({  });
+    async findById(id: number) {    
+        return this.repository.findOneBy({ id });
     }
 
     async getAll() {
         return this.repository.find();
     }
 
-    async save(wordCategory: WordCategory){
-        return this.repository.save(wordCategory);
-    }
-    
-
-    async delete (id: string){
+    async delete(id: number){
         return this.repository.delete(id);
     }
 }

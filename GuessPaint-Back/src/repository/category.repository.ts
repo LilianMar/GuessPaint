@@ -1,4 +1,5 @@
 import { AppDataSource } from "../data-source";
+import { CategoryResponse } from "../dto/category.dto";
 import { Category } from "../entity/Category.entity";
 
 
@@ -6,11 +7,15 @@ export class CategoryRepository{
 
     private repository = AppDataSource.getRepository(Category);
 
+    async save(category: CategoryResponse){
+        return this.repository.save(category);
+    }
+
     async findByTitle(title: string) {
         return this.repository.findOneBy({ title });
     }
 
-    async findById(id: string) {
+    async findById(id: number) {
         return this.repository.findOneBy({ id });
     }
     
@@ -18,15 +23,13 @@ export class CategoryRepository{
         return this.repository.find();
     }
 
-    async save(category: Category){
-        return this.repository.save(category);
-    }
-    
-    async update(category: Category) {
-        return this.repository.update(category.id, category);
+    async update(category: CategoryResponse) {
+        const {id,...updateData} = category;
+        await this.repository.update({id}, updateData);
+        return this.findById(id);
     }
 
-    async delete (id: string){
+    async delete (id: number){
         return this.repository.delete(id);
     }
 }

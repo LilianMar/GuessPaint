@@ -7,14 +7,21 @@ const categoryController = new CategoryController();
 const {createCategorySchema,updateCategorySchema} = require("../middleware/schemas/category.schema");
 const validateInformation = require("../middleware/validation");
 
+
+Router.post(
+    "/categoryCreate",
+    validateInformation(createCategorySchema),
+    categoryController.save
+    );
+    
 Router.get(
     "/categoryByText",
-    categoryController.getByTexto
+    categoryController.findByTexto
     );
 
     Router.get(
     "/categoryById/:id",
-    categoryController.getById
+    categoryController.findById
     );
 
     Router.get(
@@ -22,14 +29,8 @@ Router.get(
     categoryController.getAll
     );
 
-    Router.post(
-    "/categoryCreate",
-    validateInformation(createCategorySchema),
-    categoryController.save
-    );
-
     Router.put(
-    "/categoryUpdateBy/:id",
+    "/categoryUpdate",
     validateInformation(updateCategorySchema),
     categoryController.update
     )
