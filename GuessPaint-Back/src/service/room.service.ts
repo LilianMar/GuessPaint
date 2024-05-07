@@ -2,7 +2,7 @@ import { RoomRepository } from '../repository/room.repository';
 import { Room } from '../entity/Room.entity';
 import { RoomResponse } from '../dto/room.dto';
 import { CategoryRepository } from '../repository/category.repository';
-import { Category } from '../entity/Category.entity';
+import { Word } from '../entity/Word.entity';
 
 export class RoomService {
     private roomRepository: RoomRepository ;
@@ -33,19 +33,13 @@ export class RoomService {
         return roomExist;
     }
 
-    public async findCategoryByRoomId(id: number): Promise<Category | undefined> {
-        const roomExist = await this.roomRepository.findById(id);
-        if(roomExist){
-            const categoryExist = await this.categoryRepository.findById(roomExist.categoryId);
-            if(categoryExist){
-                return categoryExist;
-            }
-            else{
-                throw new Error('Category not found');
-            }
-        }
+    public findWordsByRoom = async (id: number): Promise<Word[]> => {
+        const room = await this.roomRepository.findById(id);
+
+        if (!room) throw new Error('Room not found');
         else{
-            throw new Error('Room not found');
+            const category = await this.categoryRepository.findById(room.categoryId);
+            return category.words;
         }
     }
 

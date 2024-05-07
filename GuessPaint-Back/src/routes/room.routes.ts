@@ -13,10 +13,9 @@ Router.get(
     roomController.findById
 );
 
-
 Router.get(
     '/room/words/:id',
-    roomController.findCategoryByRoomId
+    roomController.findWordsByRoom
 );
 
 Router.get(

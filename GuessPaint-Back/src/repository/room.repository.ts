@@ -14,10 +14,6 @@ export class RoomRepository{
     async findById(id: number) {
         return this.repository.findOneBy({ id });
     }
-
-    async findCategoryByRoom(id: number) {//revisar
-        return this.categoryRepository.findOneBy({ id });
-    }
     
     async getAll() {
         return this.repository.find();

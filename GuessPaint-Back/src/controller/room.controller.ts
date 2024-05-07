@@ -29,13 +29,15 @@ export class RoomController {
         }
     }
 
-    public findCategoryByRoomId = async (req: Request, res: Response) => {
+    public findWordsByRoom = async (req: Request, res: Response) => {
         const { id } = req.params;
+
         try {
-            const category = await this.roomService.findCategoryByRoomId(+id);
-            return res.status(200).json(category);
+            const words = await this.roomService.findWordsByRoom(+id);
+
+            return res.status(200).json(words);
         } catch (error) {
-            res.status(400).json({ error: error.message });
+            return res.status(400).json({ error: error.message });
         }
     }
 

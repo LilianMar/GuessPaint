@@ -5,3 +5,6 @@ Steps to run this project:
 1. Run `npm i` command
 2. Setup database settings inside `data-source.ts` file
 3. Run `npm start` command
+
+install- npm install express socket.io @types/socket.io @types/express
+
