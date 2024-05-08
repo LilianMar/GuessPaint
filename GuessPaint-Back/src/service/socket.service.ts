@@ -1,4 +1,4 @@
-/*import { WebSocket } from 'ws';
+import { WebSocket } from 'ws';
 import { RoomRepository } from '../repository/room.repository';
 import { CategoryRepository } from '../repository/category.repository';
 
@@ -15,7 +15,6 @@ export class SocketService {
     }
 
     public joinRoom = (ws: WebSocket, id: number, userName: string): void => {
-        console.log('User joined');
         if (!userName ) {
             ws.send(JSON.stringify({ error: "user not provided "}));
             ws.close();
@@ -24,13 +23,18 @@ export class SocketService {
             this.rooms[id] = new Set();
             this.rooms[id].add({ ws, userName});
             console.log('User joined');
+            console.log(this.rooms);
+        }
+        else if (this.rooms[id] && this.roomRepository.findById(id)) {
+            this.rooms[id].add({ ws, userName});
+            console.log('User joined');
+            console.log(this.rooms);
         }
     }
 
     public leaveRoom = (ws: WebSocket, id: number): void => {
         if (this.rooms[id] && this.roomRepository.findById(id)) {
             this.rooms[id].delete(ws);
-
             if (this.rooms[id].size === 0) {
                 delete this.rooms[id];
             }
@@ -58,7 +62,7 @@ export class SocketService {
             const randomIndex = Math.floor(Math.random() * words.length);
             const selectedWord = words[randomIndex].texto;
 
-            this.sendMessageToUser( ws, id, `You must draw: ${ selectedWord }`);
+            this.sendMessageToUser( ws, id, `Is your turn to draw: ${ selectedWord }`);
         }
     }
 
@@ -71,4 +75,4 @@ export class SocketService {
             });
         }
     }
-}*/
+}

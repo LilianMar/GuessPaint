@@ -13,7 +13,8 @@ module.exports={
         progress: Joi.string()
         .min(7)
         .max(12)
-        .valid('Sin iniciar', 'En curso', 'Finalizado')
+        .lowercase()
+        .valid('sin iniciar', 'en curso', 'finalizado')
         .required()
     }),
 

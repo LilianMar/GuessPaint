@@ -6,15 +6,15 @@ import { wordRouter } from './routes/words.routes';
 import { categoryRouter } from './routes/category.routes';
 import { wordCategoryRouter } from './routes/wordCategory.routes';
 import { roomRouter } from './routes/room.routes';
-//import { websocketRouter } from './routes/socket.routes';
+import { websocketRouter } from './routes/socket.routes';
 import * as swaggerUi from 'swagger-ui-express';
 import * as swaggerSpec from './swagger';
 import { AppDataSource } from './data-source';
 
 const app: express.Application = express();
-//const expressWsInstance:expressWs.Instance = expressWs(app);
-const wsInstance = require('express-ws')(app);
-const websocketRouter = require('../src/routes/socket.routes')(wsInstance);
+const expressWsInstance:expressWs.Instance = expressWs(app);
+//const wsInstance = require('express-ws')(app);
+//const websocketRouter = require('../src/routes/socket.routes')(wsInstance);
 const PORT = 3000;
 const API_PREFIX = '/api';
 const API_DOCS_PREFIX = '/api-docs';
@@ -29,8 +29,8 @@ app.use(API_PREFIX, wordRouter);
 app.use(API_PREFIX, categoryRouter);
 app.use(API_PREFIX, wordCategoryRouter);
 app.use(API_PREFIX, roomRouter);
-//websocketRouter('/ws', app, expressWsInstance);
-app.use("/ws", websocketRouter);
+websocketRouter('/ws', app, expressWsInstance);
+//app.use("/ws", websocketRouter);
 
 
 AppDataSource.initialize()

@@ -10,7 +10,9 @@ export class WordCategoryController {
 
     public save = async (req: Request, res: Response) => {
         const wordCategory = req.body;
-        console.log(wordCategory);
+        const wc_id= parseInt(wordCategory.wordId.toString() + wordCategory.categoryId.toString());
+        wordCategory.id = wc_id;
+        console.log(wc_id)
         try {
             const result = await this.wordCategoryService.save(wordCategory);
             return res.status(200).json(result);

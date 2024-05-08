@@ -1,26 +1,30 @@
+/*
+---------------------------------------------------------------------------------------------------------------------
+
 const WebSocket = require('ws');
 export class SocketController{
     public static  rooms = {};
 
-     joinRoom(ws, roomName) {
-        if (!SocketController.rooms[roomName]) {
-            SocketController.rooms[roomName] = new Set();
+     joinRoom(ws, roomId) {
+        if (!SocketController.rooms[roomId]) {
+            SocketController.rooms[roomId] = new Set();
         }
-        SocketController.rooms[roomName].add(ws);
+        SocketController.rooms[roomId].add(ws);
+        console.log('User joined');
       }
       
-       leaveRoom(ws, roomName) {
-        if (SocketController.rooms[roomName]) {
-            SocketController.rooms[roomName].delete(ws);
-          if (SocketController.rooms[roomName].size === 0) {
-            delete SocketController.rooms[roomName];
+       leaveRoom(ws, roomId) {
+        if (SocketController.rooms[roomId]) {
+            SocketController.rooms[roomId].delete(ws);
+          if (SocketController.rooms[roomId].size === 0) {
+            delete SocketController.rooms[roomId];
           }
         }
       }
       
-       sendMessageToRoom(roomName, message) {
-        if (SocketController.rooms[roomName]) {
-          for (const client of SocketController.rooms[roomName]) {
+       sendMessageToRoom(roomId, message) {
+        if (SocketController.rooms[roomId]) {
+          for (const client of SocketController.rooms[roomId]) {
             if (client.readyState === WebSocket.OPEN) {
               client.send(message);
             }
@@ -33,3 +37,4 @@ export class SocketController{
     
     }
 }
+*/

@@ -18,18 +18,10 @@ export class WordCategoryService {
     public async save(wordCategory: WordCategoryResponse): Promise<WordCategory> {
         const responseByIdWord = await this.wordRepository.findById(wordCategory.wordId);
         const responseByIdCategory = await this.categoryRepository.findById(wordCategory.categoryId);
-        wordCategory.wordId = responseByIdWord.id;
-        wordCategory.categoryId = responseByIdCategory.id;
-        const wc_id= parseInt(responseByIdWord.id.toString() + responseByIdCategory.id.toString());
-        wordCategory.id = wc_id;
-
-        console.log(responseByIdWord.id)
-        console.log(responseByIdCategory.id)
-        console.log(wc_id)
+        console.log(wordCategory.wordId)
+        console.log(wordCategory.categoryId)
         console.log(wordCategory)
-
-
-
+    
         if(!responseByIdWord || !responseByIdCategory){
             throw new Error('Word or Category not found');
         }
