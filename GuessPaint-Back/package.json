@@ -4,13 +4,15 @@
   "description": "",
   "type": "commonjs",
   "devDependencies": {
+    "@types/express-ws": "^3.0.4",
     "@types/node": "^16.18.96",
     "@types/pg": "^8.11.5",
     "@types/reflect-metadata": "^0.1.0",
+    "@types/ws": "^8.5.10",
     "nodemon": "^3.1.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
-    "ts-node": "^10.9.1",
+    "ts-node": "^10.9.2",
     "typescript": "^4.9.5"
   },
   "dependencies": {
