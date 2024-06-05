@@ -28,6 +28,7 @@ const handleSocketConnection = (ws: WebSocket, id: number, userName: string, use
 
     ws.on('close', () => {
         socketController.leaveRoom(ws, id, userName, userAvatar, userScore);
+        //disconect
     });
 };
 
