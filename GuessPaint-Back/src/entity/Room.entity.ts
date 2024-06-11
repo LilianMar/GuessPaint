@@ -16,7 +16,7 @@ import { Category } from "./Category.entity";
         @Column({name: 'title', type: 'varchar',  nullable: false })
         title: string;
 
-        @Column({name: 'progress', type: 'varchar', default: 'Sin iniciar', nullable: false})
+        @Column({name: 'progress', type: 'varchar', default: 'Sin iniciar'})
         progress: string;  
 
         @Column({name: "category_id" , nullable: false})

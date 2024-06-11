@@ -1,1 +1,19 @@
-<p>create-room works!</p>
+<div class="flex flex-col justify-center items-center">
+    <div class="flex flex-col justify-center items-center m-10 relative">
+        <img src="./assets/img/hojabg.png" />
+
+        <div class="absolute inset-0 flex flex-col justify-center items-center ">
+            <p class="font-semibold text-xl w-3/5 mb-4">Crea una mesa para jugar con tus amigos </p>
+            <label class="font-semibold ">TITULO:</label>
+            <input class="w-1/2 bg-gradient-to-b from-gray-200 to-gray-300 rounded-lg py-2 mb-2" type="text" id="title" name="title" >
+
+            <label class="font-semibold ">PROGRESO DE LA SALA: </label>
+            <input class="w-1/2 bg-gradient-to-b from-gray-200 to-gray-300 rounded-lg py-2 mb-2" type="text" id="progress" name="progress" >
+            <!--??OBLIGATORIO, LISTA DESPLEGABLE PARA LAS OPCIONES?? EL BACK SOLO ADMITE 3 OPCIONES, CREERIA QUE NO, REVISAR SI EL BACK LO DEJA CREAR VACION O SI SE LE PONE POR DEFECTO SIN INICIAR -->
+            <label class="font-semibold ">CATEGORIA ASOCIADA:</label>
+            <input class="w-1/2 bg-gradient-to-b from-gray-200 to-gray-300 rounded-lg py-2 mb-2" type="text" id="categoryId" name="categoryId" >
+            <!--LISTA CON LAS CATEGORIAS DISPONIBLES-->
+            <button class="bg-teal-600 font-bold text-white my-4 p-3 w-1/2 rounded-lg">CREAR</button>
+        </div>
+    </div>
+</div>

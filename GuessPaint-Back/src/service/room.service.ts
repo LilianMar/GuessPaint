@@ -18,7 +18,7 @@ export class RoomService {
         const responseByIdCategory = await this.categoryRepository.findById(+room.categoryId);
         console.log(responseByIdCategory);
         console.log(room.categoryId);
-        room.progress=room.progress.toLocaleLowerCase();
+        
 
         if (!responseByIdCategory) {
             throw new Error('Category not found');

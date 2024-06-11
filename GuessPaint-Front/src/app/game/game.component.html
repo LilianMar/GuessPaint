@@ -1,1 +1,45 @@
-<p>game works!</p>
+<div class="absolute inset-0 flex flex-row justify-center items-center mt-4">
+    <div class="bg-white mx-3 ml-20 h-3/4 w-2/3" name="usersList">
+      <p>lista de usuarios</p>
+    </div>
+  
+    <div class="bg-white h-3/4 w-full" name="draw">
+      <div class="bg-red-800 flex flex-row justify-center items-center">
+        <div id="timer" class="relative">
+          <div id="countdown" class="inset-0 flex justify-center items-center">
+            <span id="timer-text" class="bg-white mx-2 my-2 p-4 px-4 rounded-full border-4 border-black text-2xl font-bold text-black"></span>
+          </div>
+        </div>
+        <div>
+          <p>palabra</p>
+        </div>
+      </div>
+      <div class="relative h-5/6 flex flex-col">
+        <canvas #mainCanvas id="main-canvas" height="480" class="bg-white flex-grow"></canvas>
+        <div id="controls" class="bg-gray-100 py-2 px-4 flex justify-center items-center space-x-4">
+          <div class="flex flex-col items-start">
+            <span>Color:</span>
+            <div class="flex items-center space-x-2">
+              <button class="color-option bg-black w-6 h-6 rounded-full" data-color="#000000"></button>
+              <button class="color-option bg-red-500 w-6 h-6 rounded-full" data-color="#FF0000"></button>
+              <button class="color-option bg-blue-500 w-6 h-6 rounded-full" data-color="#0000FF"></button>
+              <button class="color-option bg-green-500 w-6 h-6 rounded-full" data-color="#008000"></button>
+              <button class="color-option bg-yellow-500 w-6 h-6 rounded-full" data-color="#FFFF00"></button>
+              <button class="color-option bg-orange-500 w-6 h-6 rounded-full" data-color="#FFA500"></button>
+              <button class="color-option bg-purple-500 w-6 h-6 rounded-full" data-color="#800080"></button>
+            </div>
+          </div>
+          <div class="flex flex-col items-start">
+            <input class="w-full" type="range" #lineWidthInput id="line-width" min="1" max="10" step="1" value="5">
+            <span #lineWidthDisplay id="line-width-display">Grosor: 5</span>
+          </div>
+          <button #clearButton id="clear-btn" class="mx-2 py-1 bg-red-600 text-white rounded">Limpiar</button>
+        </div>
+      </div>
+    </div>
+  
+    <div class="bg-white mx-3 mr-20 h-3/4 w-2/3" name="chat">
+      <p>chat</p>
+    </div>
+  </div>
+  
