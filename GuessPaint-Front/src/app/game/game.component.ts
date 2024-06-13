@@ -1,5 +1,8 @@
 import { Component, ElementRef, ViewChild, OnInit, AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { SocketService } from '../services/socket.service';
+import { RoomDataService } from '../services/room-data.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-game',
@@ -21,10 +24,28 @@ export class GameComponent implements OnInit, AfterViewInit {
   private lineWidth = 5;
 
   private drawing = false;
+  roomId: number = 0;
+  userName: string = '';
+  userAvatar: string = '';
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private socketService: SocketService,
+    private roomDataService: RoomDataService,
+    private router: Router
+  ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    // Obtener datos del servicio
+    this.roomId = this.roomDataService.getRoomId();
+    this.userName = this.roomDataService.getUserName();
+    this.userAvatar = this.roomDataService.getUserAvatar();
+
+    if (this.roomId === 0 || this.userName === '') {
+      // Redirigir al usuario a la página de join si no hay datos válidos
+      this.router.navigate(['/join']);
+    }
+  }
 
   ngAfterViewInit() {
     if (isPlatformBrowser(this.platformId)) {
@@ -58,13 +79,6 @@ export class GameComponent implements OnInit, AfterViewInit {
     if (this.clearButton) {
       this.clearButton.nativeElement.addEventListener('click', this.clearCanvas.bind(this));
     }
-
-    const colorButtons = document.querySelectorAll('.color-option');
-    colorButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        this.color = button.getAttribute('data-color') || this.color;
-      });
-    });
   }
 
   private resizeCanvas() {
@@ -89,59 +103,40 @@ export class GameComponent implements OnInit, AfterViewInit {
     this.initialY = cursorY;
   }
 
-  private mouseDown(evt: MouseEvent | TouchEvent) {
-    evt.preventDefault();
+  private mouseDown(event: MouseEvent | TouchEvent) {
+    this.initialX = event instanceof MouseEvent ? event.clientX - this.correccionX : event.touches[0].clientX - this.correccionX;
+    this.initialY = event instanceof MouseEvent ? event.clientY - this.correccionY : event.touches[0].clientY - this.correccionY;
     this.drawing = true;
-    const coords = this.getMouseCoords(evt);
-    this.initialX = coords.x;
-    this.initialY = coords.y;
-    this.draw(this.initialX, this.initialY);
-
-    if (this.mainCanvas) {
-      this.mainCanvas.nativeElement.addEventListener('mousemove', this.mouseMoving.bind(this));
-      this.mainCanvas.nativeElement.addEventListener('touchmove', this.mouseMoving.bind(this));
-    }
+    this.mainCanvas?.nativeElement.addEventListener('mousemove', this.mouseMove.bind(this));
+    this.mainCanvas?.nativeElement.addEventListener('touchmove', this.mouseMove.bind(this));
   }
 
-  private mouseMoving(evt: MouseEvent | TouchEvent) {
-    if (!this.drawing) return;
-    evt.preventDefault();
-    const coords = this.getMouseCoords(evt);
-    this.draw(coords.x, coords.y);
+  private mouseMove(event: MouseEvent | TouchEvent) {
+    const cursorX = event instanceof MouseEvent ? event.clientX - this.correccionX : event.touches[0].clientX - this.correccionX;
+    const cursorY = event instanceof MouseEvent ? event.clientY - this.correccionY : event.touches[0].clientY - this.correccionY;
+
+    if (this.drawing) {
+      this.draw(cursorX, cursorY);
+    }
   }
 
   private mouseUp() {
     this.drawing = false;
-    if (this.mainCanvas) {
-      this.mainCanvas.nativeElement.removeEventListener('mousemove', this.mouseMoving.bind(this));
-      this.mainCanvas.nativeElement.removeEventListener('touchmove', this.mouseMoving.bind(this));
-    }
+    this.mainCanvas?.nativeElement.removeEventListener('mousemove', this.mouseMove.bind(this));
+    this.mainCanvas?.nativeElement.removeEventListener('touchmove', this.mouseMove.bind(this));
   }
 
-  private getMouseCoords(evt: MouseEvent | TouchEvent): { x: number, y: number } {
-    if ('changedTouches' in evt) {
-      return {
-        x: evt.changedTouches[0].pageX - this.correccionX,
-        y: evt.changedTouches[0].pageY - this.correccionY
-      };
-    } else {
-      return {
-        x: evt.offsetX,
-        y: evt.offsetY
-      };
-    }
-  }
-
-  private updateLineWidth(event: Event) {
+  private updateLineWidth() {
     if (this.lineWidthInput && this.lineWidthDisplay) {
-      this.lineWidth = parseInt((event.target as HTMLInputElement).value);
-      this.lineWidthDisplay.nativeElement.textContent = `Grosor: ${this.lineWidth}`;
+      this.lineWidth = this.lineWidthInput.nativeElement.valueAsNumber;
+      this.lineWidthDisplay.nativeElement.innerText = this.lineWidth.toString();
     }
   }
 
   private clearCanvas() {
     if (this.mainCanvas) {
-      this.context.clearRect(0, 0, this.mainCanvas.nativeElement.width, this.mainCanvas.nativeElement.height);
+      const canvas = this.mainCanvas.nativeElement;
+      this.context.clearRect(0, 0, canvas.width, canvas.height);
     }
   }
 }

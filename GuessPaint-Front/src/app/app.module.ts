@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
-
+import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { JoinGameComponent } from './join-game/join-game.component';
@@ -10,6 +9,7 @@ import { ChatComponent } from './game/chat/chat.component';
 import { RoomListComponent } from './room-list/room-list.component';
 import { CreateRoomComponent } from './create-room/create-room.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -23,12 +23,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule, 
+    AppRoutingModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   providers: [
-    provideClientHydration()
   ],
   bootstrap: [AppComponent]
 })

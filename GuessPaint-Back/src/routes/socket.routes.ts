@@ -7,10 +7,10 @@ const socketController = new SocketController();
 export const websocketRouter = (path: string, app, expressWsInstance: expressWs.Instance) => {
     expressWsInstance.applyTo(app);
 
-    app.ws(`${path}/room/:id`, (ws, req) => {
-        const idRoom = parseInt(req.params.id);
-        const userName = String(req.headers.username);
-        const userAvatar = String(req.headers.userAvatar);
+    app.ws(`${path}/room/:idRoom/:userName/:userAvatar`, (ws, req) => {
+        const idRoom = parseInt(req.params.idRoom);
+        const userName = String(req.params.userName);
+        const userAvatar = String(req.params.userAvatar);
         const userScore = 0;
 
         handleSocketConnection(ws, idRoom, userName, userAvatar, userScore);
@@ -19,50 +19,53 @@ export const websocketRouter = (path: string, app, expressWsInstance: expressWs.
     return app;
 };
 
-const handleSocketConnection = (ws: WebSocket, id: number, userName: string, userAvatar: string, userScore: number) => {
-    socketController.joinRoom(ws, id, userName, userAvatar, userScore);
+const handleSocketConnection = (ws: WebSocket, idRoom: number, userName: string, userAvatar: string, userScore: number) => {
+    socketController.joinRoom(ws, idRoom, userName, userAvatar, userScore);
 
     ws.on('message', async (msg: string) => {
-        await handleIncomingMessage(ws, id, userName, msg, userAvatar, userScore);
+        await handleIncomingMessage(ws, idRoom, userName, msg, userAvatar, userScore);
     });
 
     ws.on('close', () => {
-        socketController.leaveRoom(ws, id, userName, userAvatar, userScore);
-        //disconect
+        socketController.leaveRoom(ws, idRoom, userName, userAvatar, userScore);
+    });
+
+    ws.on('disconnect',()=> {
+        socketController.leaveRoom(ws, idRoom, userName, userAvatar, userScore);
     });
 };
 
-const handleIncomingMessage = async (ws: WebSocket, id: number, userName: string, msg: string, userAvatar: string, userScore: number) => {
+const handleIncomingMessage = async (ws: WebSocket, idRoom: number, userName: string, msg: string, userAvatar: string, userScore: number) => {
     let jsonMessage: { type: string, data?: any };
 
     try {
         jsonMessage = JSON.parse(msg);
     } catch (error) {
-        socketController.sendMessageToUser(ws, id, "Invalid message format");
+        socketController.sendMessageToUser(ws, idRoom, "InvalidRoom message format");
         return;
     }
 
     switch (jsonMessage.type) {
         case 'SEND_MESSAGE':
             if (!jsonMessage.data) {
-                socketController.sendMessageToUser(ws, id, "Data is required");
+                socketController.sendMessageToUser(ws, idRoom, "Data is required");
                 return;
             }
-            socketController.guessWord(ws, id, jsonMessage.data, userName, userAvatar, userScore);
+            socketController.guessWord(ws, idRoom, jsonMessage.data, userName, userAvatar, userScore);
             console.log(jsonMessage.data);
             break;
 
         case 'START_TURN':
-            await socketController.startTurnInRoom(ws, id);
+            await socketController.startTurnInRoom(ws, idRoom);
             break;
 
 
         case 'LEAVE_ROOM':
-            socketController.leaveRoom(ws, id, userName, jsonMessage.data.userAvatar, jsonMessage.data.userScore);
+            socketController.leaveRoom(ws, idRoom, userName, jsonMessage.data.userAvatar, jsonMessage.data.userScore);
             break;   
             
         default:
-            socketController.sendMessageToUser(ws, id, "Invalid message type");
+            socketController.sendMessageToUser(ws, idRoom, "InvalidRoom message type");
             return;
     }
 };

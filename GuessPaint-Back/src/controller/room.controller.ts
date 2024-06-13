@@ -9,7 +9,7 @@ export class RoomController {
         this.roomService = new RoomService();
     }
 
-    public save = async (req: Request, res: Response) => {
+    /*public save = async (req: Request, res: Response) => {
         const room = req.body;
         //como hacer para que el progreso de la sala se ponga solo en sin iniciar 
         try {
@@ -18,7 +18,18 @@ export class RoomController {
         } catch (error) {
             res.status(400).json({ error: error.message });
         }
-    }
+    }*/
+
+    public save = async (req: Request, res: Response) => {
+        const room: Room = { ...req.body, progress: 'Sin iniciar' }; // Establece el progreso aquí
+        try {
+            const result: Room = await this.roomService.save(room);
+            return res.status(200).json(result);
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
+    };
+    
 
     public findById = async (req: Request, res: Response) => {
         const { id } = req.params;

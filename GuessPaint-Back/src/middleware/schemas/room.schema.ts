@@ -14,8 +14,6 @@ module.exports={
         .min(7)
         .max(12)
         .lowercase()
-        .valid('sin iniciar', 'en curso', 'finalizado')
-        .required()
     }),
 
     updateRoomSchema: Joi.object().keys({
@@ -30,8 +28,6 @@ module.exports={
         progress: Joi.string()
         .min(7)
         .max(12)
-        .valid('Sin iniciar', 'En curso', 'Finalizado')
-        .required()
     }),
 
 }

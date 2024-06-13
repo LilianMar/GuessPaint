@@ -13,8 +13,6 @@ import { AppDataSource } from './data-source';
 
 const app: express.Application = express();
 const expressWsInstance:expressWs.Instance = expressWs(app);
-//const wsInstance = require('express-ws')(app);
-//const websocketRouter = require('../src/routes/socket.routes')(wsInstance);
 const PORT = 3000;
 const API_PREFIX = '/api';
 const API_DOCS_PREFIX = '/api-docs';
@@ -30,7 +28,6 @@ app.use(API_PREFIX, categoryRouter);
 app.use(API_PREFIX, wordCategoryRouter);
 app.use(API_PREFIX, roomRouter);
 websocketRouter('/ws', app, expressWsInstance);
-//app.use("/ws", websocketRouter);
 
 
 AppDataSource.initialize()
