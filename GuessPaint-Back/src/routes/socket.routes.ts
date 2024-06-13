@@ -52,7 +52,7 @@ const handleIncomingMessage = async (ws: WebSocket, idRoom: number, userName: st
                 return;
             }
             socketController.guessWord(ws, idRoom, jsonMessage.data, userName, userAvatar, userScore);
-            console.log(jsonMessage.data);
+            //console.log(jsonMessage.data);
             break;
 
         case 'START_TURN':

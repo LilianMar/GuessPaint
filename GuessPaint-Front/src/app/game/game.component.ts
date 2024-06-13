@@ -1,3 +1,4 @@
+// game.component.ts
 import { Component, ElementRef, ViewChild, OnInit, AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { SocketService } from '../services/socket.service';
@@ -56,9 +57,15 @@ export class GameComponent implements OnInit, AfterViewInit {
 
   private setupCanvas() {
     if (this.mainCanvas) {
-      this.context = this.mainCanvas.nativeElement.getContext('2d') as CanvasRenderingContext2D;
+      const canvas = this.mainCanvas.nativeElement;
+      this.context = canvas.getContext('2d') as CanvasRenderingContext2D;
       this.resizeCanvas();
       window.addEventListener('resize', this.resizeCanvas.bind(this));
+      
+      // Calcular las correcciones de coordenadas
+      const rect = canvas.getBoundingClientRect();
+      this.correccionX = rect.left;
+      this.correccionY = rect.top;
     }
   }
 
@@ -86,7 +93,16 @@ export class GameComponent implements OnInit, AfterViewInit {
       const canvas = this.mainCanvas.nativeElement;
       canvas.width = canvas.parentElement?.offsetWidth || canvas.width;
       canvas.height = canvas.parentElement?.offsetHeight || canvas.height;
+      
+      // Actualizar las correcciones de coordenadas
+      const rect = canvas.getBoundingClientRect();
+      this.correccionX = rect.left;
+      this.correccionY = rect.top;
     }
+  }
+
+  setColor(newColor: string) {
+    this.color = newColor;
   }
 
   private draw(cursorX: number, cursorY: number) {
@@ -129,7 +145,7 @@ export class GameComponent implements OnInit, AfterViewInit {
   private updateLineWidth() {
     if (this.lineWidthInput && this.lineWidthDisplay) {
       this.lineWidth = this.lineWidthInput.nativeElement.valueAsNumber;
-      this.lineWidthDisplay.nativeElement.innerText = this.lineWidth.toString();
+      this.lineWidthDisplay.nativeElement.innerText = `Grosor: ${this.lineWidth}`;
     }
   }
 
